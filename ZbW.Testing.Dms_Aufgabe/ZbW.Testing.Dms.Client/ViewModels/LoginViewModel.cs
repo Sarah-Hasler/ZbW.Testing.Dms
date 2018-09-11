@@ -1,4 +1,6 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System.Windows;
 
@@ -18,6 +20,11 @@
             _loginView = loginView;
             CmdLogin = new DelegateCommand(OnCmdLogin, OnCanLogin);
             CmdAbbrechen = new DelegateCommand(OnCmdAbbrechen);
+
+	        if (!String.IsNullOrEmpty(Properties.Settings.Default.currentUser))
+	        {
+				this.OnCmdLogin();
+	        }
         }
 
         public DelegateCommand CmdAbbrechen { get; }
@@ -58,10 +65,17 @@
                 return;
             }
 
-            var searchView = new MainView(Benutzername);
+			this.saveUser();
+
+			var searchView = new MainView(Benutzername);
             searchView.Show();
 
             _loginView.Close();
         }
+
+	    private void saveUser() {
+			Properties.Settings.Default.currentUser = Benutzername;
+		    Properties.Settings.Default.Save();
+		}
     }
 }
