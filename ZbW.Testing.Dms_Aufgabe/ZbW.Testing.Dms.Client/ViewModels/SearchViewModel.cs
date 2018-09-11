@@ -1,126 +1,97 @@
 ﻿namespace ZbW.Testing.Dms.Client.ViewModels
 {
-    using System.Collections.Generic;
+	using System.Collections.Generic;
+	using Prism.Commands;
+	using Prism.Mvvm;
+	using ZbW.Testing.Dms.Client.Model;
+	using ZbW.Testing.Dms.Client.Repositories;
 
-    using Prism.Commands;
-    using Prism.Mvvm;
+	internal class SearchViewModel : BindableBase
+	{
+		private List<MetadataItem> _filteredMetadataItems;
 
-    using ZbW.Testing.Dms.Client.Model;
-    using ZbW.Testing.Dms.Client.Repositories;
+		private MetadataItem _selectedMetadataItem;
 
-    internal class SearchViewModel : BindableBase
-    {
-        private List<MetadataItem> _filteredMetadataItems;
+		private string _selectedTypItem;
 
-        private MetadataItem _selectedMetadataItem;
+		private string _suchbegriff;
 
-        private string _selectedTypItem;
+		private List<string> _typItems;
 
-        private string _suchbegriff;
+		public SearchViewModel()
+		{
+			TypItems = ComboBoxItems.Typ;
 
-        private List<string> _typItems;
+			CmdSuchen = new DelegateCommand(OnCmdSuchen);
+			CmdReset = new DelegateCommand(OnCmdReset);
+			CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
+		}
 
-        public SearchViewModel()
-        {
-            TypItems = ComboBoxItems.Typ;
+		public DelegateCommand CmdOeffnen { get; }
 
-            CmdSuchen = new DelegateCommand(OnCmdSuchen);
-            CmdReset = new DelegateCommand(OnCmdReset);
-            CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
-        }
+		public DelegateCommand CmdSuchen { get; }
 
-        public DelegateCommand CmdOeffnen { get; }
+		public DelegateCommand CmdReset { get; }
 
-        public DelegateCommand CmdSuchen { get; }
+		public string Suchbegriff
+		{
+			get { return _suchbegriff; }
 
-        public DelegateCommand CmdReset { get; }
+			set { SetProperty(ref _suchbegriff, value); }
+		}
 
-        public string Suchbegriff
-        {
-            get
-            {
-                return _suchbegriff;
-            }
+		public List<string> TypItems
+		{
+			get { return _typItems; }
 
-            set
-            {
-                SetProperty(ref _suchbegriff, value);
-            }
-        }
+			set { SetProperty(ref _typItems, value); }
+		}
 
-        public List<string> TypItems
-        {
-            get
-            {
-                return _typItems;
-            }
+		public string SelectedTypItem
+		{
+			get { return _selectedTypItem; }
 
-            set
-            {
-                SetProperty(ref _typItems, value);
-            }
-        }
+			set { SetProperty(ref _selectedTypItem, value); }
+		}
 
-        public string SelectedTypItem
-        {
-            get
-            {
-                return _selectedTypItem;
-            }
+		public List<MetadataItem> FilteredMetadataItems
+		{
+			get { return _filteredMetadataItems; }
 
-            set
-            {
-                SetProperty(ref _selectedTypItem, value);
-            }
-        }
+			set { SetProperty(ref _filteredMetadataItems, value); }
+		}
 
-        public List<MetadataItem> FilteredMetadataItems
-        {
-            get
-            {
-                return _filteredMetadataItems;
-            }
+		public MetadataItem SelectedMetadataItem
+		{
+			get { return _selectedMetadataItem; }
 
-            set
-            {
-                SetProperty(ref _filteredMetadataItems, value);
-            }
-        }
+			set
+			{
+				if (SetProperty(ref _selectedMetadataItem, value))
+				{
+					CmdOeffnen.RaiseCanExecuteChanged();
+				}
+			}
+		}
 
-        public MetadataItem SelectedMetadataItem
-        {
-            get
-            {
-                return _selectedMetadataItem;
-            }
+		private bool OnCanCmdOeffnen()
+		{
+			return SelectedMetadataItem != null;
+		}
 
-            set
-            {
-                if (SetProperty(ref _selectedMetadataItem, value))
-                {
-                    CmdOeffnen.RaiseCanExecuteChanged();
-                }
-            }
-        }
+		private void OnCmdOeffnen()
+		{
+			// TODO: Add your Code here
+		}
 
-        private bool OnCanCmdOeffnen()
-        {
-            return SelectedMetadataItem != null;
-        }
+		private void OnCmdSuchen()
+		{
+			// TODO: Add your Code here
+		}
 
-        private void OnCmdOeffnen()
-        {
-            // TODO: Add your Code here
-        }
-
-        private void OnCmdSuchen()
-        {
-            // TODO: Add your Code here
-        }
-
-        private void OnCmdReset()
-        {
-            // TODO: Add your Code here
-        }
-    }
+		private void OnCmdReset()
+		{
+			// TODO: Add your Code here
+		}
+	}
 }
