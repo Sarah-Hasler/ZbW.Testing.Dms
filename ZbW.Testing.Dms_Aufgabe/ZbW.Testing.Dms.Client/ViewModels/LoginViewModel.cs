@@ -21,8 +21,12 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             CmdLogin = new DelegateCommand(OnCmdLogin, OnCanLogin);
             CmdAbbrechen = new DelegateCommand(OnCmdAbbrechen);
 
-	        if (!String.IsNullOrEmpty(Properties.Settings.Default.currentUser))
+	        var savedUser = Properties.Settings.Default.currentUser;
+
+
+			if (!String.IsNullOrEmpty(savedUser))
 	        {
+		        Benutzername = savedUser;
 				this.OnCmdLogin();
 	        }
         }
