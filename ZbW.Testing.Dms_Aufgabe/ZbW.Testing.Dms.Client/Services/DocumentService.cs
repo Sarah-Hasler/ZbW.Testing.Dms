@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,18 +42,25 @@ namespace ZbW.Testing.Dms.Client.Services
 		internal void AddDocumentToDms(MetadataItem metadataItem)
 		{
 			var targetPath = this._targePath + "/" + metadataItem.ValutaDatum.Year;
-			_fileService.CreateValutaFolderIfNotExists(targetPath);
 			var guid = Guid.NewGuid();
+			var newFileName = _fileService.GetNewFileName(FILE_TYPE_NAME, metadataItem.FilePath, guid);
+			var sourcePath = metadataItem.FilePath;
+			var newTargetFilePath = targetPath + "/" + newFileName;
+			metadataItem.FilePath = newTargetFilePath;
+			_fileService.CreateValutaFolderIfNotExists(targetPath);
 
-			this.HandelDocument(metadataItem, targetPath, guid);
+			this.HandelDocument(metadataItem, sourcePath, guid);
 			this.HandelMetadata(metadataItem, targetPath, guid);
 		}
 
-		private void HandelDocument(MetadataItem metadataItem, String targetPath, Guid guid)
+		public void openFile(MetadataItem metadataItem)
 		{
-			var newFileName = _fileService.GetNewFileName(FILE_TYPE_NAME, metadataItem.FilePath, guid);
-			var sourcePath = metadataItem.FilePath;
-			targetPath = targetPath + "/" + newFileName;
+			Process.Start(metadataItem.FilePath);
+		}
+
+		private void HandelDocument(MetadataItem metadataItem, String sourcePath, Guid guid)
+		{
+			var targetPath = metadataItem.FilePath;
 			_fileService.CopyDocumentToTarge(sourcePath, targetPath);
 
 			if (metadataItem.IsRemoveFileEnabled)
@@ -64,9 +72,10 @@ namespace ZbW.Testing.Dms.Client.Services
 		private void HandelMetadata(MetadataItem metadataItem, String targetPath, Guid guid)
 		{
 			var newFileName = _fileService.GetNewFileName(METASATA_TYPE_NAME, ".xml", guid);
+			var newFilePath = targetPath + "/" + newFileName;
 
 			var serializeXml = this._xmlService.SeralizeMetadataItem(metadataItem);
-			this._xmlService.SaveXml(serializeXml, targetPath + "/" + newFileName);
+			this._xmlService.SaveXml(serializeXml, newFilePath);
 		}
 
 		public List<MetadataItem> GetAllMetadataItems()

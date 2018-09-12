@@ -44,12 +44,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Typ" Binding="{Binding Type}"/>
                 <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}" Width="*"/>
+                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding FilePath}" Width="*"/>
 				<DataGridTextColumn Header="Stichwörter" Binding="{Binding Stichwoerter}"/>
 				<DataGridTextColumn Header="ValutaDatum" Binding="{Binding ValutaDatum}"/>
 				<DataGridTextColumn Header="Erfassungsdatum" Binding="{Binding Erfassungsdatum}"/>
 			</DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Width="100"/>
+        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Width="100" Command="{Binding CmdOeffnen}"/>
     </Grid>
 </UserControl>

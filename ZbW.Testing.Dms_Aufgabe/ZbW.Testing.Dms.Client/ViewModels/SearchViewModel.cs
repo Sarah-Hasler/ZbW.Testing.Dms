@@ -91,7 +91,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
 		private void OnCmdOeffnen()
 		{
-			// TODO: Add your Code here
+			this._documentService.openFile(SelectedMetadataItem);
 		}
 
 		private void OnCmdSuchen()
