@@ -23,7 +23,14 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             CmdNavigateToSearch = new DelegateCommand(OnCmdNavigateToSearch);
             CmdNavigateToDocumentDetail = new DelegateCommand(OnCmdNavigateToDocumentDetail);
             CmdLogout = new DelegateCommand(OnCmdLogout);
+	        this.NavigateToStartPage();
         }
+
+	    private void NavigateToStartPage()
+	    {
+		    this.NavigateToSearch();
+
+	    }
 		
 	    private void OnCmdLogout()
 	    {
