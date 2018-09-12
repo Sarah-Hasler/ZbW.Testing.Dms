@@ -4,13 +4,22 @@ namespace ZbW.Testing.Dms.Client.Model
 {
     public class MetadataItem
     {
+	    private string _stichwoerter = String.Empty;
+
+	    public string Stichwoerter
+	    {
+		    get { return _stichwoerter; }
+
+		    set { _stichwoerter = value; }
+		}
+		
 	    public string Bezeichnung { get; set; }
 	    public string Benutzer { get; set; }
 	    public DateTime Erfassungsdatum { get; set; }
 		public string FilePath { get; set; }
 		public Boolean IsRemoveFileEnabled { get; set; }
 		public string Type { get; set; } 
-		public string Stichwoerter { get; set; }
+//		public string Stichwoerter { get ; set; }
 		public DateTime ValutaDatum { get; set; }
 
 		public MetadataItem() {

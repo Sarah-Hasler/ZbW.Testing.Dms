@@ -12,7 +12,6 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 	internal class SearchViewModel : BindableBase
 	{
 		private List<MetadataItem> _filteredMetadataItems;
-		private List<MetadataItem> _metadataItems;
 
 		private MetadataItem _selectedMetadataItem;
 
@@ -21,6 +20,8 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 		private string _suchbegriff;
 
 		private List<string> _typItems;
+
+		private DocumentService _documentService;
 
 		public SearchViewModel()
 		{
@@ -31,10 +32,9 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 			CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
 
 
-			var documentService = new DocumentService();
+			_documentService = new DocumentService();
 
-			this.MetadataItems = documentService.GetAllMetadataItems();
-			this.FilteredMetadataItems = MetadataItems;
+			this.FilteredMetadataItems = _documentService.GetAllMetadataItems();
 		}
 
 		public DelegateCommand CmdOeffnen { get; }
@@ -71,12 +71,6 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 			set { SetProperty(ref _filteredMetadataItems, value); }
 		}
 
-		public List<MetadataItem> MetadataItems {
-			get { return _metadataItems; }
-
-			set { SetProperty(ref _metadataItems, value); }
-		}
-
 		public MetadataItem SelectedMetadataItem
 		{
 			get { return _selectedMetadataItem; }
@@ -102,12 +96,14 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
 		private void OnCmdSuchen()
 		{
-			// TODO: Add your Code here
+			this.FilteredMetadataItems = this._documentService.FilterMetadataItems(this.SelectedTypItem, this.Suchbegriff);
 		}
 
 		private void OnCmdReset()
 		{
-			// TODO: Add your Code here
+			this.FilteredMetadataItems = this._documentService.MetadataItems;
+			this.Suchbegriff = String.Empty;
+			this.SelectedTypItem = null;
 		}
 	}
 }

@@ -19,8 +19,6 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
 		private string _bezeichnung;
 
-		private DateTime _erfassungsdatum;
-
 		private string _filePath;
 
 		private bool _isRemoveFileEnabled;
@@ -39,7 +37,6 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 		{
 			_navigateBack = navigateBack;
 			Benutzer = benutzer;
-			Erfassungsdatum = DateTime.Now;
 			TypItems = ComboBoxItems.Typ;
 
 			_documentService = new DocumentService();
@@ -75,14 +72,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
 			set { SetProperty(ref _selectedTypItem, value); }
 		}
-
-		public DateTime Erfassungsdatum
-		{
-			get { return _erfassungsdatum; }
-
-			set { SetProperty(ref _erfassungsdatum, value); }
-		}
-
+		
 		public string Benutzer
 		{
 			get { return _benutzer; }
@@ -149,7 +139,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 			metadataItem.Stichwoerter = this.Stichwoerter;
 			metadataItem.Type = this.SelectedTypItem;
 			metadataItem.ValutaDatum = (DateTime) this.ValutaDatum;
-			metadataItem.ValutaDatum = this.Erfassungsdatum;
+			metadataItem.Erfassungsdatum = DateTime.Now;
 
 			return metadataItem;
 		}

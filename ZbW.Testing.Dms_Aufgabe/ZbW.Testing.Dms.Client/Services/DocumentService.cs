@@ -19,6 +19,8 @@ namespace ZbW.Testing.Dms.Client.Services
 
 		private String _targePath;
 
+		private List<MetadataItem> _metadataItems;
+
 		private FileService _fileService;
 		private XmlService _xmlService;
 
@@ -27,6 +29,13 @@ namespace ZbW.Testing.Dms.Client.Services
 			this._targePath = ConfigurationManager.AppSettings["RepositoryDir"];
 			this._fileService = new FileService();
 			this._xmlService = new XmlService();
+		}
+
+		public List<MetadataItem> MetadataItems
+		{
+			get { return _metadataItems; }
+
+			set { _metadataItems = value; }
 		}
 
 		internal void AddDocumentToDms(MetadataItem metadataItem)
@@ -77,9 +86,33 @@ namespace ZbW.Testing.Dms.Client.Services
 				metadataItemList.Add(this._xmlService.DeseralizeMetadatItem((String) xmlPath));
 			}
 
-			return metadataItemList.Cast<MetadataItem>().ToList();
+			this.MetadataItems = metadataItemList.Cast<MetadataItem>().ToList();
+			return this.MetadataItems;
 		}
 
+		public List<MetadataItem> FilterMetadataItems(string type, string searchParam)
+		{
+			if (String.IsNullOrEmpty(searchParam) && String.IsNullOrEmpty(type))
+			{
+				return this.MetadataItems;
+			}
+
+			if (String.IsNullOrEmpty(searchParam))
+			{
+				searchParam = "";
+			}
+
+			var filteredItems = this.MetadataItems.Where(item =>
+			{
+				return (item.Bezeichnung.Contains(searchParam) ||
+				        item.Stichwoerter.Contains(searchParam) ||
+				        item.Erfassungsdatum.ToString().Contains(searchParam) ||
+				        item.ValutaDatum.ToString().Contains(searchParam)) &&
+				       (String.IsNullOrEmpty(type) || item.Type.Equals(type));
+			}).ToList();
+
+			return filteredItems;
+		}
 
 		private String[] GetAllFolderPaths(String targetPath)
 		{
