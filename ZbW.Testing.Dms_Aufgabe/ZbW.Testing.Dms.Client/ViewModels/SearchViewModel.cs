@@ -1,4 +1,7 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System;
+using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
 	using System.Collections.Generic;
 	using Prism.Commands;
@@ -9,6 +12,7 @@
 	internal class SearchViewModel : BindableBase
 	{
 		private List<MetadataItem> _filteredMetadataItems;
+		private List<MetadataItem> _metadataItems;
 
 		private MetadataItem _selectedMetadataItem;
 
@@ -25,6 +29,12 @@
 			CmdSuchen = new DelegateCommand(OnCmdSuchen);
 			CmdReset = new DelegateCommand(OnCmdReset);
 			CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
+
+
+			var documentService = new DocumentService();
+
+			this.MetadataItems = documentService.GetAllMetadataItems();
+			this.FilteredMetadataItems = MetadataItems;
 		}
 
 		public DelegateCommand CmdOeffnen { get; }
@@ -59,6 +69,12 @@
 			get { return _filteredMetadataItems; }
 
 			set { SetProperty(ref _filteredMetadataItems, value); }
+		}
+
+		public List<MetadataItem> MetadataItems {
+			get { return _metadataItems; }
+
+			set { SetProperty(ref _metadataItems, value); }
 		}
 
 		public MetadataItem SelectedMetadataItem

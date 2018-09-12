@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -19,11 +20,13 @@ namespace ZbW.Testing.Dms.Client.Services
 		private String _targePath;
 
 		private FileService _fileService;
+		private XmlService _xmlService;
 
 		public DocumentService()
 		{
 			this._targePath = ConfigurationManager.AppSettings["RepositoryDir"];
 			this._fileService = new FileService();
+			this._xmlService = new XmlService();
 		}
 
 		internal void AddDocumentToDms(MetadataItem metadataItem)
@@ -51,11 +54,47 @@ namespace ZbW.Testing.Dms.Client.Services
 
 		private void HandelMetadata(MetadataItem metadataItem, String targetPath, Guid guid)
 		{
-			var xmlService = new XmlService();
 			var newFileName = _fileService.GetNewFileName(METASATA_TYPE_NAME, ".xml", guid);
 
-			var serializeXml = xmlService.SeralizeMetadataItem(metadataItem);
-			xmlService.SaveXml(serializeXml, targetPath + "/" + newFileName);
+			var serializeXml = this._xmlService.SeralizeMetadataItem(metadataItem);
+			this._xmlService.SaveXml(serializeXml, targetPath + "/" + newFileName);
+		}
+
+		public List<MetadataItem> GetAllMetadataItems()
+		{
+			var folderPaths = this.GetAllFolderPaths(this._targePath);
+			ArrayList xmlPathsFromAllFoders = new ArrayList();
+			ArrayList metadataItemList = new ArrayList();
+
+			foreach (string folderPath in folderPaths)
+			{
+				var xmlPathsFromOneFolder = this.GetAllXmlPaths(folderPath);
+				xmlPathsFromAllFoders.AddRange(xmlPathsFromOneFolder);
+			}
+
+			foreach (var xmlPath in xmlPathsFromAllFoders)
+			{
+				metadataItemList.Add(this._xmlService.DeseralizeMetadatItem((String) xmlPath));
+			}
+
+			return metadataItemList.Cast<MetadataItem>().ToList();
+		}
+
+
+		private String[] GetAllFolderPaths(String targetPath)
+		{
+			return Directory.GetDirectories(targetPath);
+		}
+
+		private ArrayList GetAllXmlPaths(String folderPath)
+		{
+			ArrayList xmlPaths = new ArrayList();
+			foreach (string file in Directory.EnumerateFiles(folderPath, "*.xml"))
+			{
+				xmlPaths.Add(file);
+			}
+
+			return xmlPaths;
 		}
 	}
 }

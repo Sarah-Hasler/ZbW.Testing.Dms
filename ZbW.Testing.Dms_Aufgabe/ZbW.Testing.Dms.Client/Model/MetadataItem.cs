@@ -4,27 +4,27 @@ namespace ZbW.Testing.Dms.Client.Model
 {
     public class MetadataItem
     {
-	    public String Bezeichnung;
-	    public String Benutzer;
-	    public DateTime Erfassungsdatum;
-	    public String FilePath;
-	    public Boolean IsRemoveFileEnabled;
-	    public String Type;
-	    public String Stichwoerter;
-	    public DateTime ValutaDatum;
+	    public string Bezeichnung { get; set; }
+	    public string Benutzer { get; set; }
+	    public DateTime Erfassungsdatum { get; set; }
+		public string FilePath { get; set; }
+		public Boolean IsRemoveFileEnabled { get; set; }
+		public string Type { get; set; } 
+		public string Stichwoerter { get; set; }
+		public DateTime ValutaDatum { get; set; }
 
-	    public MetadataItem() {
+		public MetadataItem() {
 	    }
 
 		MetadataItem(
-			String bezeichnung,
+			string bezeichnung,
 			DateTime erfassungsdatum,
-			String filePath,
+			string filePath,
 			Boolean isRemoveFileEnabled,
-			String type,
-			String stichwoerter,
+			string type,
+			string stichwoerter,
 			DateTime valutaDatum,
-			String benutzer)
+			string benutzer)
 	    {
 		    this.Bezeichnung = bezeichnung;
 		    this.Benutzer = benutzer;
