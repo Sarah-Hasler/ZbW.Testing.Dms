@@ -72,8 +72,12 @@
     </ApplicationDefinition>
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
+    <Compile Include="Services\CouldNotMoveFileException.cs" />
     <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\FileTestable.cs" />
+    <Compile Include="Services\IUserSettable.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\XmlService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

@@ -9,11 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Prism.Mvvm;
 using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
-	public class DocumentService
+	public class DocumentService: BindableBase
 	{
 		private static String FILE_TYPE_NAME = "Content";
 		private static String METASATA_TYPE_NAME = "Metadata";
@@ -35,8 +36,8 @@ namespace ZbW.Testing.Dms.Client.Services
 		public List<MetadataItem> MetadataItems
 		{
 			get { return _metadataItems; }
-
-			set { _metadataItems = value; }
+			
+			set { SetProperty(ref _metadataItems, value); }
 		}
 
 		internal void AddDocumentToDms(MetadataItem metadataItem)
@@ -45,8 +46,7 @@ namespace ZbW.Testing.Dms.Client.Services
 			var guid = Guid.NewGuid();
 			var newFileName = _fileService.GetNewFileName(FILE_TYPE_NAME, metadataItem.FilePath, guid);
 			var sourcePath = metadataItem.FilePath;
-			var newTargetFilePath = targetPath + "/" + newFileName;
-			metadataItem.FilePath = newTargetFilePath;
+			metadataItem.FilePath = targetPath + "/" + newFileName; ;
 			_fileService.CreateValutaFolderIfNotExists(targetPath);
 
 			this.HandelDocument(metadataItem, sourcePath, guid);
@@ -61,6 +61,7 @@ namespace ZbW.Testing.Dms.Client.Services
 		private void HandelDocument(MetadataItem metadataItem, String sourcePath, Guid guid)
 		{
 			var targetPath = metadataItem.FilePath;
+			// Es wird kein new FileTestable mehr benötigt --> standard wird im Konstruktor vom FileService gesetzt
 			_fileService.CopyDocumentToTarge(sourcePath, targetPath);
 
 			if (metadataItem.IsRemoveFileEnabled)

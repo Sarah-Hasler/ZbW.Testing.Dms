@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ZbW.Testing.Dms.Client.Services;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
 {
@@ -34,10 +35,12 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 		
 	    private void OnCmdLogout()
 	    {
-		    Properties.Settings.Default.currentUser = "";
-		    Properties.Settings.Default.Save();
+			UserService userService = new UserService();
+			userService.RemoveUserName();
+
 		    LoginView loginView = new LoginView();
 			loginView.Show();
+
 		    this._mainView.Close();
 		}
 

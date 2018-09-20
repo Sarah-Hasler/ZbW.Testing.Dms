@@ -19,7 +19,6 @@ namespace ZbW.Testing.Dms.Client.Model
 		public string FilePath { get; set; }
 		public Boolean IsRemoveFileEnabled { get; set; }
 		public string Type { get; set; } 
-//		public string Stichwoerter { get ; set; }
 		public DateTime ValutaDatum { get; set; }
 
 		public MetadataItem() {
