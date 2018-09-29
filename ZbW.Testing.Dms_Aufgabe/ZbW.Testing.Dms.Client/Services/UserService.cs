@@ -8,11 +8,14 @@ namespace ZbW.Testing.Dms.Client.Services
 {
 	internal class UserService
 	{
+		internal UserTestable UserTestable { private get; set; }
+
+
 		public void SaveUsername(string username)
 		{
 			if (String.IsNullOrEmpty(username))
 			{
-				return;
+				throw new Exception();
 			}
 
 			Properties.Settings.Default.currentUser = username;

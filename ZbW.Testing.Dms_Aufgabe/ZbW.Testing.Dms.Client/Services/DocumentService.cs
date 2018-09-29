@@ -58,17 +58,16 @@ namespace ZbW.Testing.Dms.Client.Services
 			Process.Start(metadataItem.FilePath);
 		}
 
-		private void HandelDocument(MetadataItem metadataItem, String sourcePath, Guid guid)
-		{
+		private void HandelDocument(MetadataItem metadataItem, String sourcePath, Guid guid) {
 			var targetPath = metadataItem.FilePath;
 			// Es wird kein new FileTestable mehr benötigt --> standard wird im Konstruktor vom FileService gesetzt
 			_fileService.CopyDocumentToTarge(sourcePath, targetPath);
 
-			if (metadataItem.IsRemoveFileEnabled)
-			{
+			if (metadataItem.IsRemoveFileEnabled) {
 				_fileService.RemoveDocumentOnSource(metadataItem.FilePath);
 			}
 		}
+
 
 		private void HandelMetadata(MetadataItem metadataItem, String targetPath, Guid guid)
 		{
